@@ -1,0 +1,14 @@
+.loadMoreBtn {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  margin: 12px auto 16px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #264fbe;
+  color: #fff;
+}
+
+.loadMoreBtn:hover {
+  background-color: #3767e4;
+}

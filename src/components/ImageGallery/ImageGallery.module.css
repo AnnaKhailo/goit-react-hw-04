@@ -10,7 +10,7 @@
 
 .galleryItem {
   display: block;
-  width: calc((100% - 48px) / 3);
+  width: 321px;
   border: 1px solid #808080;
   cursor: pointer;
 }

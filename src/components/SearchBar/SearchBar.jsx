@@ -9,7 +9,7 @@ export default function SearchBar({ onSearch }) {
   const handleSubmit = (values, actions) => {
     values.query.trim() === "" && notify();
     onSearch(values.query);
-    actions.resetForm;
+    actions.resetForm();
   };
 
   return (

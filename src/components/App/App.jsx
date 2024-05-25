@@ -9,7 +9,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ImageModal from "../ImageModal/ImageModal";
 
 import { getImages } from "../../images-api";
-import "./App.module.css";
+import css from "./App.module.css";
 
 function App() {
   const [images, setImages] = useState([]);
@@ -19,8 +19,8 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [totalPages, setTotalPages] = useState(0);
-  // const [showBtn, setShowBtn] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [noImagesByQuery, setNoImagesByQuery] = useState(false);
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
@@ -32,9 +32,11 @@ function App() {
         setIsLoading(true);
         setIsError(false);
         const data = await getImages(searchQuery, page);
-        setImages((prevState) => [...prevState, ...data]);
-        // setTotalPages(data.totalPages);
-        // setShowBtn(data.total_pages && data.total_pages !== page);
+        setImages((prevState) => [...prevState, ...data.results]);
+        setTotalPages(data.total_pages);
+        if (!data.total_pages) {
+          setNoImagesByQuery(true);
+        }
       } catch (error) {
         setIsError(true);
       } finally {
@@ -48,6 +50,8 @@ function App() {
     setSearchQuery(topic);
     setPage(1);
     setImages([]);
+    setTotalPages(0);
+    setNoImagesByQuery(false);
   };
 
   const handleLoadMore = async () => {
@@ -80,8 +84,19 @@ function App() {
       )}
       {isLoading && <Loader />}
 
-      {images.length > 0 && !isLoading && (
+      {images.length > 0 && !isLoading && page < totalPages && (
         <LoadMoreBtn onLoadMore={handleLoadMore} />
+      )}
+      {page === totalPages && (
+        <p className={css.endOfCollection}>
+          Sorry, but that is all we had for your request!
+        </p>
+      )}
+      {noImagesByQuery && (
+        <p className={css.noImages}>
+          Sorry, there are no images matching your search query. Please try
+          again.
+        </p>
       )}
     </div>
   );

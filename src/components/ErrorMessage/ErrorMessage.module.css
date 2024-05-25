@@ -1,0 +1,6 @@
+.error {
+  display: flex;
+  align-items: center;
+  color: orangered;
+  justify-content: center;
+}
